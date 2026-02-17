@@ -81,7 +81,7 @@ function App() {
       return <LoginPage apiBaseUrl={API_BASE_URL} onLogin={handleLogin} open={true} onOpenChange={(open) => setPage(open ? "chat" : "home")} />;
     }
 
-    return <HomePage  onLogin={handleLogin} />;
+    return <HomePage apiBaseUrl={API_BASE_URL} onLogin={handleLogin} />;
   }
 
   return (

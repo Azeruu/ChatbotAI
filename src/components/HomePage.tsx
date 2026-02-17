@@ -6,11 +6,11 @@ import { LoginPage, type User } from "./LoginPage";
 type HomePageProps = {
   // onGetStarted: () => void;
   onLogin: (user: User) => void;
-  // apiBaseUrl: string;
+  apiBaseUrl: string;
 };
 
 
-function HomePage({ onLogin }: HomePageProps) {
+function HomePage({ onLogin, apiBaseUrl }: HomePageProps) {
   const [openLogin, setOpenLogin] = useState(false);
   return (
     <div className="relative fixed bg-[url('/kebunsawit.png')] min-h-screen bg-cover bg-center bg-no-repeat">
@@ -33,7 +33,7 @@ function HomePage({ onLogin }: HomePageProps) {
           <LoginPage
             open={openLogin}
             onOpenChange={setOpenLogin}
-            apiBaseUrl="http://localhost:3000"
+            apiBaseUrl={apiBaseUrl}
             onLogin={(user) => {
               onLogin(user);
               console.log("Berhasil login:", user);
