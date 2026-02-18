@@ -2,6 +2,7 @@ import { useState } from "react";
 import { HomePage } from "./components/HomePage";
 import { ChatLayout } from "./components/ChatLayout";
 import { LoginPage, type User } from "./components/LoginPage";
+import { ThemeProvider } from "./components/theme-provider";
 
 type Page = "home" | "login" | "chat";
 
@@ -85,13 +86,16 @@ function App() {
   }
 
   return (
-    <ChatLayout
-      user={user}
-      sessionId={sessionId}
-      apiBaseUrl={API_BASE_URL}
-      onSessionIdChange={handleSessionIdChange}
-      onLogout={handleLogout}
-    />
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      {/* {children} */}
+      <ChatLayout
+        user={user}
+        sessionId={sessionId}
+        apiBaseUrl={API_BASE_URL}
+        onSessionIdChange={handleSessionIdChange}
+        onLogout={handleLogout}
+      />
+    </ThemeProvider>
   );
 }
 

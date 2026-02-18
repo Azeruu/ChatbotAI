@@ -1,6 +1,6 @@
-import { HomeIcon, LogOut, Menu, NotebookPenIcon, Trash2Icon } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import Logo from "../assets/opensawit.png";
+import Sidebar from "./Sidebar";
 
 type Message = {
   id: string;
@@ -211,16 +211,16 @@ function ChatPage({
   };
 
   return (
-    <div className="flex flex-col h-screen bg-emerald-600 text-gray-800">
+    <div className="flex flex-col h-screen bg-background text-primary overflow-hidden">
 
-      <main className="flex-1 overflow-y-auto p-4 space-y-4 max-w-3xl w-full mx-auto">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden p-5 md:p-5 space-y-4 md:max-w-3xl w-full mx-auto">
         {messages.length === 0 && !loading ? (
-          <div className="h-full flex items-center justify-center">
+          <div className="h-full flex items-center justify-center px-4">
             <div className="text-center max-w-md space-y-2">
-              <p className="text-2xl text-gray-900">
+              <p className="text-xl md:text-2xl text-primary">
                 Selamat datang di Open Sawit Chat.
               </p>
-              <p className="text-md text-gray-600">
+              <p className="text-sm md:text-md text-muted-foreground">
                 Tulis pertanyaan pertama kamu di bawah untuk mulai ngobrol dengan
                 Wowo Chan.
               </p>
@@ -235,15 +235,15 @@ function ChatPage({
                   }`}
               >
                 <div
-                  className={`max-w-[80%] px-4 py-2 rounded-2xl shadow-sm ${message.role === "user"
+                  className={`max-w-[85%] md:max-w-[80%] px-3 md:px-4 py-2 rounded-2xl shadow-sm ${message.role === "user"
                     ? "bg-indigo-500 text-white rounded-tr-none"
                     : "bg-white text-gray-700 border border-gray-200 rounded-tl-none"
                     }`}
                 >
-                  <p className="text-xs font-bold mb-1 opacity-70">
+                  <p className="text-xs md:text-xs font-bold mb-1 opacity-70">
                     {message.role === "user" ? "Kamu" : "Wowo Chan"}
                   </p>
-                  <p className="whitespace-pre-wrap leading-relaxed">
+                  <p className="whitespace-pre-wrap leading-relaxed text-sm md:text-base">
                     {message.content}
                   </p>
                 </div>
@@ -251,7 +251,7 @@ function ChatPage({
             ))}
 
             {loading && (
-              <div className="flex justify-start italic text-sm text-gray-500 animate-pulse">
+              <div className="flex justify-start italic text-xs md:text-sm text-gray-500 animate-pulse px-3 md:px-0">
                 Wowo Chan sedang berpikir...
               </div>
             )}
@@ -261,10 +261,10 @@ function ChatPage({
         )}
       </main>
 
-      <footer className="sticky pb-20 bg-emerald-600 shadow-md">
-        <div className="max-w-3xl mx-auto flex gap-2">
+      <footer className="sticky bottom-0 md:pb-5 pb-4 pt-2 bg-muted-foreground shadow-md w-full">
+        <div className="max-w-3xl mx-auto mt-4 flex gap-2 px-3 md:px-0 items-center justify-center">
           <input
-            className="flex-1 border border-gray-100 rounded-full px-5 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all"
+            className="flex-1 border border-foreground rounded-full px-4 md:px-5 py-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all"
             value={input}
             onChange={(event) => setInput(event.target.value)}
             onKeyDown={(event) => event.key === "Enter" && sendMessage()}
@@ -274,78 +274,12 @@ function ChatPage({
           <button
             onClick={sendMessage}
             disabled={loading}
-            className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white rounded-full px-6 py-2 font-medium transition-colors shadow-sm"
+            className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white rounded-full px-10 md:px-6 py-2 font-sm md:text-base transition-colors shadow-sm"
           >
             Kirim
           </button>
         </div>
       </footer>
-    </div>
-  );
-}
-
-type RenameChatSectionProps = {
-  sessionId: string;
-  currentTitle: string | null;
-  apiBaseUrl: string;
-  onRenamed: (updated: { id: string; title: string | null; createdAt: string }) => void;
-};
-
-function RenameChatSection({
-  sessionId,
-  currentTitle,
-  apiBaseUrl,
-  onRenamed,
-}: RenameChatSectionProps) {
-  const [value, setValue] = useState(currentTitle ?? "");
-
-  const handleSubmit = async () => {
-    const trimmed = value.trim();
-
-    try {
-      const response = await fetch(`${apiBaseUrl}/api/chat/${sessionId}/title`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title: trimmed }),
-      });
-
-      if (!response.ok) {
-        return;
-      }
-
-      const updated = (await response.json()) as {
-        id: string;
-        title: string | null;
-        createdAt: string;
-      };
-
-      onRenamed(updated);
-    } catch (error) {
-      console.error("Gagal mengganti nama chat", error);
-    }
-  };
-
-  return (
-    <div className="px-4 py-3 border-b">
-      <p className="text-xs font-semibold text-gray-700 mb-1">
-        Ganti nama chat
-      </p>
-      <div className="flex gap-2">
-        <input
-          value={value}
-          onChange={(event) => setValue(event.target.value)}
-          className="flex-1 border border-gray-300 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500"
-          placeholder="Nama chat"
-        />
-        <button
-          onClick={handleSubmit}
-          className="text-xs bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg px-3 py-1"
-        >
-          Simpan
-        </button>
-      </div>
     </div>
   );
 }
@@ -368,6 +302,7 @@ function ChatLayout({
   const [sessions, setSessions] = useState<
     { id: string; title: string | null; createdAt: string }[]
   >([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     let isCancelled = false;
@@ -407,12 +342,26 @@ function ChatLayout({
     };
   }, [apiBaseUrl, user.id, sessionId]);
 
-  const handleGoHomeChat = () => {
-    onSessionIdChange(null);
-  };
+  // Set initial sidebar state based on screen size
+  useEffect(() => {
+    const checkScreenSize = () => {
+      // Tablet breakpoint is typically 768px, desktop is 1024px
+      // Hide sidebar by default on screens smaller than 768px (mobile only)
+      // Tablet (768px+) and Desktop (1024px+) should show sidebar by default
+      const isMobile = window.innerWidth < 768;
+      setIsSidebarOpen(!isMobile);
+    };
 
-  const handleNewChat = () => {
-    onSessionIdChange(null);
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
   const handleDeleteSession = async (id: string) => {
@@ -465,124 +414,52 @@ function ChatLayout({
     })();
   };
 
-  return (
-    <div className="flex h-screen bg-gray-50 text-gray-800">
-      <aside className="w-72 border-r bg-emerald-600 flex flex-col">
-
-        {/* Header */}
-        <header className="sticky top-0 z-50 bg-emerald-700 text-gray-100 py-3 px-6 shadow-md flex justify-between items-center">
-          <div className="flex items-center">
-            <img src={Logo} alt="Logo Open Sawit" className="w-16 h-16" />
-            <h1 className="text-sm font-bold text-center tracking-wide">Open Sawit</h1>
-          </div>
-          <Menu className="cursor-pointer" />
-        </header>
-
-        {/* Button Navigasi */}
-        <div className="px-4 py-3 flex flex-col gap-2 mt-8">
-          <button
-            onClick={handleGoHomeChat}
-            className="flex-1 text-sm bg-transparent hover:bg-gray-200/30 text-gray-900 rounded-full px-3 py-2 font-bold w-full items-start flex"
-          >
-            <HomeIcon className="w-5 h-5 mr-2" />
-            Home
-          </button>
-          <button
-            onClick={handleNewChat}
-            className="flex-1 text-sm bg-transparent hover:bg-gray-200/30 text-gray-900 rounded-full px-3 py-2 font-bold items-start flex w-full"
-          >
-            <NotebookPenIcon className="w-5 h-5 mr-2" />
-            Chat baru
-          </button>
-        </div>
-
-
-        <div className="px-4 py-3">
-          <p className="text-sm font-semibold text-gray-700 mb-3 mt-3">
-            Riwayat chat
-          </p>
-          <div className="max-h-64 overflow-y-auto -mx-2 space-y-1">
-            {sessions.map((item) => {
-              const isActive = item.id === sessionId;
-              const label =
-                item.title && item.title.trim().length > 0
-                  ? item.title
-                  : "Chat tanpa judul";
-
-              return (
-                <div
-                  key={item.id}
-                  className={`flex items-center gap-2 px-2 py-1 rounded-lg ${isActive
-                    ? "bg-indigo-100 text-indigo-700"
-                    : "hover:bg-gray-100/30 text-gray-900"
-                    }`}
-                >
-                  <button
-                    onClick={() => onSessionIdChange(item.id)}
-                    className="flex-1 text-left text-xs"
-                  >
-                    <span className="line-clamp-2">{label}</span>
-                  </button>
-                  <button
-                    onClick={() => handleDeleteSession(item.id)}
-                    className="text-xs text-gray-600 hover:text-red-500 px-1 py-0.5 rounded"
-                  >
-                    <Trash2Icon className="w-5 h-5" />
-                  </button>
-                </div>
-              );
-            })}
-            {sessions.length === 0 && (
-              <p className="text-xs text-gray-400 px-2 py-1">
-                Belum ada riwayat chat.
-              </p>
-            )}
-          </div>
-        </div>
-        {sessionId && (
-          <RenameChatSection
-            key={sessionId}
-            sessionId={sessionId}
-            apiBaseUrl={apiBaseUrl}
-            currentTitle={
-              sessions.find((item) => item.id === sessionId)?.title ?? null
+  const handleSessionRenamed = (updated: { id: string; title: string | null; createdAt: string }) => {
+    setSessions((previous) =>
+      previous.map((item) =>
+        item.id === updated.id
+          ? {
+              ...item,
+              title: updated.title,
+              createdAt: updated.createdAt,
             }
-            onRenamed={(updated) => {
-              setSessions((previous) =>
-                previous.map((item) =>
-                  item.id === updated.id
-                    ? {
-                      ...item,
-                      title: updated.title,
-                      createdAt: updated.createdAt,
-                    }
-                    : item,
-                ),
-              );
-            }}
-          />
-        )}
-        {/* Bagian Header User */}
-        <div className="px-4 py-4 flex items-center justify-between mt-auto">
-          <div className="flex items-center gap-3">
-            <img src="" alt="pp" className="w-10 h-10 rounded-full border border-white" />
-            <div className="flex flex-col">
-              <span className="text-sm text-gray-100">Masuk sebagai</span>
-              <span className="text-sm font-semibold text-gray-800">
-                {user.name}
-              </span>
-            </div>
-          </div>
-          {/* drawer nanti */}
+          : item,
+      ),
+    );
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-50 text-gray-800 relative overflow-hidden w-full">
+      {/* Overlay for mobile */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={toggleSidebar}
+        />
+      )}
+      
+      <Sidebar
+        isOpen={isSidebarOpen}
+        user={user}
+        sessionId={sessionId}
+        sessions={sessions}
+        apiBaseUrl={apiBaseUrl}
+        onToggle={toggleSidebar}
+        onSessionIdChange={onSessionIdChange}
+        onDeleteSession={handleDeleteSession}
+        onLogout={onLogout}
+        onSessionRenamed={handleSessionRenamed}
+      />
+      <div className="flex-1 relative overflow-hidden w-full">
+        {/* Menu button for mobile and desktop */}
+        {!isSidebarOpen && (
           <button
-            onClick={onLogout}
-            className="text-xs text-gray-600 px-2 py-1 rounded-full hover:bg-red-50/30 transition-colors"
+            onClick={toggleSidebar}
+            className="fixed top-3 left-3 md:top-4 md:left-4 z-30 bg-emerald-600 text-white p-2 rounded-lg shadow-lg hover:bg-emerald-700 transition-colors"
           >
-            <LogOut/>
+            <Menu className="w-5 h-5 md:w-6 md:h-6" />
           </button>
-        </div>
-      </aside>
-      <div className="flex-1">
+        )}
         <ChatPage
           user={user}
           sessionId={sessionId}
