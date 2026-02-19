@@ -63,14 +63,14 @@
     --primary-foreground: oklch(0.98 0.01 150);
 
     /* Secondary: Deep Navy (Elemen Teknologi) */
-    --secondary: oklch(0.35 0.06 260);
+    --secondary: oklch(86.781% 0.08629 96.168);
     --secondary-foreground: oklch(0.98 0.01 260);
 
     --muted: oklch(0.95 0.02 150);
     --muted-foreground: oklch(0.45 0.05 260);
 
     /* Accent: Kuning Emas/CPO */
-    --accent: oklch(0.85 0.15 85);
+    --accent: oklch(60.863% 0.12377 80.21);
     --accent-foreground: oklch(0.25 0.05 85);
 
     --destructive: oklch(0.6 0.18 25);

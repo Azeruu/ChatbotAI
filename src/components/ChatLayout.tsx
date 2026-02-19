@@ -236,8 +236,8 @@ function ChatPage({
               >
                 <div
                   className={`max-w-[85%] md:max-w-[80%] px-3 md:px-4 py-2 rounded-2xl shadow-sm ${message.role === "user"
-                    ? "bg-indigo-500 text-white rounded-tr-none"
-                    : "bg-white text-gray-700 border border-gray-200 rounded-tl-none"
+                    ? "bg-secondary text-primary border border-primary rounded-tr-none"
+                    : "bg-primary text-gray-700 border border-gray-200 rounded-tl-none"
                     }`}
                 >
                   <p className="text-xs md:text-xs font-bold mb-1 opacity-70">
@@ -261,7 +261,7 @@ function ChatPage({
         )}
       </main>
 
-      <footer className="sticky bottom-0 md:pb-5 pb-4 pt-2 bg-muted-foreground shadow-md w-full">
+      <footer className="sticky bottom-0 md:pb-5 pb-4 pt-2 bg-secondary shadow-md w-full">
         <div className="max-w-3xl mx-auto mt-4 flex gap-2 px-3 md:px-0 items-center justify-center">
           <input
             className="flex-1 border border-foreground rounded-full px-4 md:px-5 py-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all"
